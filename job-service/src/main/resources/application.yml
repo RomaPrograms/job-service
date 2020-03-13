@@ -1,0 +1,89 @@
+spring:
+  security:
+    user:
+      name: login
+      password: password
+  datasource:
+    url: jdbc:postgresql://localhost:5432/verapdfdb
+    username: login
+    password: password
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        temp:
+          use_jdbc_metadata_defaults: false
+        format_sql: false
+        jdbc:
+          batch_size: 4
+        order_inserts: true
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write_dates_as_timestamps: false
+  servlet:
+    multipart:
+      max-request-size: 50MB
+      max-file-size: 20MB
+      file-size-threshold: 20MB
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  activemq:
+    broker-url: tcp://localhost:61616?jms.prefetchPolicy.queuePrefetch=1
+  jms:
+    listener:
+      concurrency: 4
+      max-concurrency: 8
+      acknowledge-mode: auto
+    template:
+      delivery-mode: persistent
+
+server:
+  servlet:
+    context-path: /api
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+      enabled: true
+      show-components: when_authorized
+    info:
+      enabled: true
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+
+logging:
+  file:
+    max-size: 10MB
+    max-history: 10
+    name: ${java.io.tmpdir}/verapdf-server/log/verapdf-server.log
+
+verapdf:
+  web:
+    cors:
+      origins: "*"
+      methods: "*"
+  cleaning:
+    job:
+      cron: "0 0 * * * *"
+      lifetime-delay-sec: 10800
+    disc:
+      cron: "0 0 3 * * *"
+      file-lifetime-days: 3
+  files:
+    min-space-threshold: 5GB
+    base-dir: ${java.io.tmpdir}/verapdf-server/files/
+    worker-dir: ${java.io.tmpdir}/verapdf-server/worker/

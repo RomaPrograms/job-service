@@ -1,0 +1,19 @@
+spring:
+    datasource:
+        url: jdbc:h2:mem:test
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.H2Dialect
+                current_session_context_class: org.springframework.orm.hibernate5.SpringSessionContext
+        hibernate:
+            ddl-auto: create-drop
+
+itext:
+    files:
+        base-dir: ${java.io.tmpdir}/files/
+        worker-dir: ${java.io.tmpdir}/worker/
+    cleaning:
+        job:
+            cron: "0 0 * * * *"
+            lifetime-delay-sec: 1000
